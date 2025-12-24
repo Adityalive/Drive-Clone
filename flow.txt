@@ -1,0 +1,11 @@
+Paper pe likh:
+
+User upload request bhejta
+
+Backend validate karta
+
+Backend store karta
+
+Metadata save hota
+
+Response jaata
