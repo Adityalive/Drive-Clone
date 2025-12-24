@@ -1,0 +1,134 @@
+Auth Layer
+API Layer
+Storage Layer
+Security Layer
+
+Here is the previous answer converted into a plain text “README.txt” style file:
+
+***
+
+Project overview  
+This project is a secure file upload and management service with user authentication, file metadata tracking, controlled access, and safe deletion flows. It is designed to keep the core happy path simple while layering strong security and well-defined edge-case handling on top.[1][2][3][4]
+
+Tech stack (example)  
+- Backend: REST API (for example Node/Express, Spring Boot, or similar).  
+- Auth: JWT or session-based authentication.  
+- Storage: Local disk or S3-like object storage.  
+- Database: Relational or document database for user and file records.[4][1]
+
+Implementation order (recommended)  
+
+1) Auth and user identity  
+- Implement the user model, signup/login endpoints, and session or JWT middleware.  
+- Require an authenticated user context for every file operation (upload, download, delete, list).[1][4]
+
+2) File metadata model  
+- Define a “files” table or collection with fields such as:  
+  - id  
+  - ownerUserId  
+  - originalFilename  
+  - storedFilename  
+  - contentType  
+  - size  
+  - checksum  
+  - createdAt  
+  - deletedAt (nullable)  
+  - visibility or access scope  
+- Store the binary file in storage using a generated name and keep all business data in the metadata record.[5][6]
+
+3) Upload logic (happy path)  
+- Implement POST /files to accept a single file from an authenticated user.  
+- Steps in the handler:  
+  - Lightly validate size and type.  
+  - Stream the file to storage using the Storage Adapter.  
+  - Create the metadata row in the database.  
+  - Return the metadata and file id in the response.[2][1]
+
+4) Secure access  
+- Implement GET /files/:id (or similar) for file access.  
+- Steps:  
+  - Check authentication.  
+  - Confirm ownership or required permissions based on metadata.  
+  - Stream the file back to the client or return a short-lived signed URL.  
+- Add listing endpoints such as GET /files/mine that only show the caller’s own files.[2][4]
+
+5) Delete flow  
+- Implement DELETE /files/:id.  
+- Steps:  
+  - Check that the requesting user owns the file or has delete permission.  
+  - Soft-delete metadata by setting deletedAt, and remove or mark the file in storage.  
+  - Optionally add a background job to hard-delete objects after a retention period.[6][4]
+
+6) Edge cases  
+- Handle partial and failure scenarios, including:  
+  - Upload interrupted in mid-stream.  
+  - Database write fails after file storage (or storage fails after DB write) and requires cleanup logic.  
+  - Duplicate uploads (use idempotency keys or checksum-based deduplication if needed).  
+  - Requests for non-existent or already deleted files, returning appropriate status codes such as 404 or 410.[3][2]
+
+7) Security and polish  
+- Enforce strict file validation:  
+  - Use an allow-list of extensions and MIME types.  
+  - Validate magic bytes.  
+  - Limit maximum file size.  
+  - Block executable content when not required by the use case.  
+- Store files outside of web root or use private buckets with pre-signed URLs.  
+- Optionally run antivirus or content sanitization steps, add rate limiting, logging, alerting, and monitoring around uploads and downloads.[3][6][2]
+
+API endpoints (example sketch)  
+- POST /auth/signup – create account.  
+- POST /auth/login – authenticate and return token.  
+- POST /files – upload file (authentication required).  
+- GET /files – list current user’s files.  
+- GET /files/:id – download file or return signed URL.  
+- DELETE /files/:id – delete file.[4][1]
+
+Local development notes  
+- Configure environment variables for database, storage bucket or path, and JWT secret.  
+- Run migrations or schema setup for user and file tables or collections.  
+- Start the backend service and exercise endpoints using a REST client or curl.[7][6]
+
+Architecture overview  
+
+High-level components  
+- Auth and User Service  
+  - Manages users, password hashing, and issuing and validating tokens.[1][4]
+
+- File API Layer  
+  - REST controllers or handlers for upload, download, list, and delete operations.  
+  - Extracts user identity from the auth layer and passes it to domain services.[1]
+
+- File Metadata Service  
+  - Provides CRUD operations for file records in the database.  
+  - Encodes ownership and authorization rules about who can see or manipulate which file.[5]
+
+- Storage Adapter  
+  - Abstract interface to the actual storage backend (local disk, S3, GCS, etc.).  
+  - Responsible for writing, reading, and deleting physical file objects.[6][4]
+
+Request flow (upload)  
+- Client (authenticated) makes POST /files with a multipart file.  
+- API validates the request and streams the file to storage through the Storage Adapter.  
+- On success, File Metadata Service saves the record and the API returns the metadata and id.[4][1]
+
+Request flow (download / secure access)  
+- Client (authenticated) makes GET /files/:id.  
+- API loads metadata and checks ownership or access permissions.  
+- API either streams the file directly from storage or returns a short-lived signed URL for the client to download.[2][4]
+
+[1](https://github.com/bartzalewski/file-upload-service)
+[2](https://www.speakeasy.com/api-design/file-uploads)
+[3](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html)
+[4](https://www.oussemasahbeni.com/blog/secure-file-upload-spring-boot)
+[5](https://firebase.google.com/docs/storage/web/file-metadata)
+[6](https://github.com/juanjolmm/java-secure-file-upload)
+[7](https://www.freecodecamp.org/news/how-to-structure-your-readme-file/)
+[8](https://markdowntotext.com)
+[9](https://picotoolkit.com/text/markdown-to-text-converter)
+[10](https://stripmd.vercel.app)
+[11](https://www.mdtotext.com/en)
+[12](https://markdowntotext.com/markdown-to-plain-text)
+[13](https://www.reddit.com/r/learnprogramming/comments/vxfku6/how_to_write_a_readme/)
+[14](https://www.vertopal.com/en/convert/markdown-to-text)
+[15](https://university.open.ac.uk/library-research-support/sites/www.open.ac.uk.library-research-support/files/files/RDM-Guidelines-for-creating-readme-style-metadata.pdf)
+[16](https://github.com/banesullivan/README)
