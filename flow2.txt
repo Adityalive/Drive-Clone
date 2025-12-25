@@ -1,0 +1,52 @@
+🟢 STEP 4: File Upload ka FLOW define kar (NO CODE)
+
+Paper / notes me likh:
+
+User login karta
+
+Token ke sath upload request
+
+Backend user identify karta
+
+Backend file validate karta
+
+Backend cloud me store karta
+
+Backend DB me metadata save karta
+
+Backend response deta
+
+👉 Agar tu ye 7 steps bina code ke explain kar sakta hai
+to implementation trivial ho jaata hai
+
+src/
+ ├─ config/
+ │   ├─ db.js
+ │   ├─ cloudinary.js
+ │
+ ├─ models/
+ │   ├─ User.model.js
+ │   ├─ File.model.js
+ │   ├─ ShareLink.model.js
+ │
+ ├─ routes/
+ │   ├─ auth.routes.js
+ │   ├─ file.routes.js
+ │   ├─ share.routes.js
+ │
+ ├─ controllers/
+ │   ├─ auth.controller.js
+ │   ├─ file.controller.js
+ │   ├─ share.controller.js
+ │
+ ├─ middleware/
+ │   ├─ auth.middleware.js
+ │   ├─ upload.middleware.js
+ │   ├─ error.middleware.js
+ │
+ ├─ utils/
+ │   ├─ generateToken.js
+ │   ├─ cleanup.js
+ │
+ ├─ app.js
+ └─ server.js
