@@ -6,11 +6,15 @@
     ref: 'File', // assumes you have a User model
     required: true
   },
-  tokenink: {
+  token: {
     type: String,
     required: true,
     unique: true
-  }
+  },
+  expiresAt: {
+      type: Date,
+      required: true,
+    },
  }, { timestamps: true }); // adds createdAt and updatedAt automatically
 
  const ShareLink = mongoose.model('ShareLink', sharelinkSchema);

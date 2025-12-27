@@ -27,10 +27,25 @@ export const uploadFile = async (req, res) => {
   }
 };
 export const getMyFiles = async (req, res) => {
-  const files = await File.find({ owner: req.user.id })
-    .sort({ createdAt: -1 });
+  const page =req.query.page || 1;
+  const  limit =req.query.limit || 10;
 
-  res.json(files);
+  const skip = (page - 1) * limit;
+
+  const files = await File.find({ owner: req.user.id })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+    const totalfiles = await File.countDocuments({ owner: req.user.id });
+
+   res.json({
+    page,
+    limit,
+    totalFiles,
+    totalPages: Math.ceil(totalFiles / limit),
+    files,
+  });
 };
 
 export const deleteFile = async (req, res) => {
