@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import userRouter from './routes/User.js';
-import dbconnect from './db/dbconnect.js';
+import dbconnect from './config/dbconnect.js';
 const app = express();
 const PORT = 3000;
 

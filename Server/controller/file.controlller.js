@@ -26,3 +26,26 @@ export const uploadFile = async (req, res) => {
     res.status(500).json({ message: "Upload failed" });
   }
 };
+export const getMyFiles = async (req, res) => {
+  const files = await File.find({ owner: req.user.id })
+    .sort({ createdAt: -1 });
+
+  res.json(files);
+};
+
+export const deleteFile = async (req, res) => {
+  const file = await File.findById(req.params.id);
+
+  if (!file) {
+    return res.status(404).json({ message: "File not found" });
+  }
+
+  if (file.owner.toString() !== req.user.id) {
+    return res.status(403).json({ message: "Not allowed" });
+  }
+
+  await cloudinary.uploader.destroy(file.publicId);
+  await file.deleteOne();
+
+  res.json({ message: "File deleted" });
+};
