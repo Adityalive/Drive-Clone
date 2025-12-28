@@ -1,7 +1,7 @@
-Paper pe likh:
-
-User upload request bhejta
-
+Paper pe likh:                              |           
+                                             |
+User upload request bhejta                  |
+                   
 Backend validate karta
 
 Backend store karta
@@ -9,3 +9,19 @@ Backend store karta
 Metadata save hota
 
 Response jaata
+---------------------------------------------------------------------------------
+User logs in
+ ↓
+Token saved
+ ↓
+ProtectedRoute allows Dashboard
+ ↓
+Dashboard loads
+ ↓
+Dashboard calls backend (/files)
+ ↓
+Interceptor auto adds token
+ ↓
+Backend returns user files
+ ↓
+React shows list
