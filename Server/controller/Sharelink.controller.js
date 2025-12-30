@@ -30,7 +30,7 @@ export const createShareLink = asyncHandler(async (req, res) => {
   });
 
   res.json({
-    shareUrl: `${process.env.BASE_URL}/share/${shareLink.token}`,
+    shareUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/share/${shareLink.token}`,
     expiresAt,
   });
 });

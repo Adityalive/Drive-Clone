@@ -6,15 +6,16 @@ import { auth } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   if (!username || !password) {
     return res.status(400).json({ message: "Username and password are required" });
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User.create({
+    const newUser = new User({
       username,
       password: hashedPassword,
+      email
     });
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });

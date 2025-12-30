@@ -1,9 +1,10 @@
   
   import express from "express";
-  import { createShareLink } from "../controller/Sharelink.controller";
-  import auth from "../middleware/auth.js";
+  import { createShareLink, accessShareLink } from "../controller/Sharelink.controller.js";
+  import { auth } from "../middleware/auth.js";
   const router = express.Router();
-  
-  router.post("/:fileId",auth, acreateShareLink);
-  
+
+  router.post("/:fileId", auth, createShareLink);
+  router.get("/:token", accessShareLink);
+
   export default router;
